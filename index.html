@@ -484,7 +484,7 @@ async function analyse() {
     const resp = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 4000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
+      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 6000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
     });
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
