@@ -478,13 +478,13 @@ async function analyse() {
   thumbSelected = null; outcomeShown = false; chatHistory = [];
   document.getElementById('footer').style.display = 'none';
 
-  const systemPrompt = 'You are a senior appliance repair expert with 20 years of hands-on experience repairing white goods across Europe. You give clear, honest, practical advice. You respond in the same language as the user query. Respond ONLY with a valid JSON object with these fields: appliance, symptom, useful_checks_first (array), most_likely_causes (array of objects with rank/cause/explanation/probability), recommended_fixes (array of objects with rank/fix/steps/risk_level/risk_explanation/difficulty/estimated_cost_eur/parts_needed), when_to_call_a_professional. No markdown, no code fences, raw JSON only. probability: high/medium/low. risk_level: low/medium/high. difficulty: beginner/intermediate/advanced.';
+  const systemPrompt = 'You are a senior appliance repair expert with 20 years of hands-on experience repairing white goods across Europe. You give clear, honest, practical advice. You respond in the same language as the user query. Respond ONLY with a valid JSON object with these fields: appliance, symptom, useful_checks_first (array), most_likely_causes (array of objects with rank/cause/explanation/probability), recommended_fixes (array of objects with rank/fix/steps/risk_level/risk_explanation/difficulty/estimated_cost_eur/parts_needed), when_to_call_a_professional. No markdown, no code fences, raw JSON only. Keep ALL text fields under 20 words each. Maximum 4 causes and 4 fixes. probability: high/medium/low. risk_level: low/medium/high. difficulty: beginner/intermediate/advanced.';
 
   try {
     const resp = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 6000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
+      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 8000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
     });
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
