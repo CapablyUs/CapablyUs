@@ -341,12 +341,7 @@ const STRINGS = {
     probHigh: "probabilité élevée", probMedium: "probabilité moyenne", probLow: "probabilité faible",
     riskLabel: "Risque:", fixLabel: "Réparation", partsLabel: "Pièces nécessaires:",
     aboutManifesto: "Nous perdons la capacité de réparer les choses. Nous pensons que cela compte.",
-    aboutBody: `<p>Quand quelque chose tombe en panne, le réflexe n'est plus d'ouvrir l'appareil pour comprendre ce qui ne va pas. Le réflexe, c'est de remplacer.</p>
-<p>Ce n'est pas arrivé par hasard. Des décennies de sophistication croissante, de décisions de conception, de politiques de garantie et de culture consumériste nous ont silencieusement appris que les appareils sont jetables et que nous ne sommes pas compétents pour intervenir. Nous sommes devenus des utilisateurs impuissants de choses que nous aurions autrefois entretenues.</p>
-<p>Nous avons abandonné un rôle de gardien et d'autonomie. Nous avons externalisé notre capacité. CapablyUs existe pour résister à cela.</p>
-<p>Pas avec nostalgie — le passé n'était pas meilleur simplement parce que les gens réparaient par nécessité. Mais avec la conviction sincère que comprendre comment les choses fonctionnent, et avoir la confiance d'agir sur cette compréhension, est une forme de dignité.</p>
-<p>La conséquence pratique de cette conviction, c'est ce que vous voyez sur ce site: un conseiller de réparation alimenté par l'IA qui vous donne des conseils clairs, honnêtes et évalués par niveau de risque. Pas pour remplacer un technicien qualifié — parfois vous en avez besoin, et nous vous le dirons honnêtement. Mais pour vous donner les connaissances et la confiance nécessaires pour prendre cette décision vous-même.</p>
-<p>La base de connaissances grandira. La communauté grandira. Les langues grandiront. Mais la conviction qui la guide ne changera pas:</p>`,
+    aboutBody: "<p>Page en cours de traduction. Revenez bientôt.</p>",
     aboutClosing: "Nous perdons la capacité de réparer les choses. Nous pensons que cela compte.",
   },
   de: {
@@ -386,12 +381,7 @@ const STRINGS = {
     probHigh: "hohe Wahrscheinlichkeit", probMedium: "mittlere Wahrscheinlichkeit", probLow: "niedrige Wahrscheinlichkeit",
     riskLabel: "Risiko:", fixLabel: "Reparatur", partsLabel: "Benötigte Teile:",
     aboutManifesto: "Wir verlieren die Fähigkeit, Dinge zu reparieren. Wir finden, das ist wichtig.",
-    aboutBody: `<p>Wenn etwas kaputtgeht, ist der Reflex nicht mehr, es zu öffnen und nachzusehen, was nicht stimmt. Der Reflex ist, es zu ersetzen.</p>
-<p>Das ist nicht zufällig passiert. Jahrzehnte zunehmender Komplexität, Designentscheidungen, Garantiebedingungen und Konsumkultur haben uns stillschweigend gelehrt, dass Geräte wegwerfbar sind und dass wir nicht kompetent sind einzugreifen. Wir sind zu hilflosen Nutzern von Dingen geworden, die wir einst selbst gewartet hätten.</p>
-<p>Wir haben eine Rolle der Eigenverantwortung aufgegeben. Wir haben unsere Fähigkeiten ausgelagert. CapablyUs existiert, um dagegen anzukämpfen.</p>
-<p>Nicht aus Nostalgie — die Vergangenheit war nicht besser, nur weil die Menschen aus Notwendigkeit reparierten. Sondern aus der echten Überzeugung, dass das Verstehen, wie Dinge funktionieren, und das Vertrauen, auf der Grundlage dieses Verständnisses zu handeln, eine Form von Würde ist.</p>
-<p>Die praktische Konsequenz dieser Überzeugung ist das, was Sie auf dieser Website sehen: ein KI-gestützter Reparaturberater, der Ihnen klare, ehrliche, risikobewertete Anleitungen gibt. Nicht um einen qualifizierten Techniker zu ersetzen — manchmal brauchen Sie einen, und wir werden Ihnen das ehrlich sagen. Aber um Ihnen das Wissen und das Vertrauen zu geben, diese Entscheidung selbst zu treffen.</p>
-<p>Die Wissensbasis wird wachsen. Die Gemeinschaft wird wachsen. Die Sprachen werden wachsen. Aber die Überzeugung, die sie antreibt, wird sich nicht ändern:</p>`,
+    aboutBody: "<p>Seite wird gerade übersetzt. Kommen Sie bald wieder.</p>",
     aboutClosing: "Wir verlieren die Fähigkeit, Dinge zu reparieren. Wir finden, das ist wichtig.",
   }
 };
@@ -488,16 +478,13 @@ async function analyse() {
   thumbSelected = null; outcomeShown = false; chatHistory = [];
   document.getElementById('footer').style.display = 'none';
 
-  const systemPrompt = `You are a senior appliance repair expert with 20 years of hands-on experience repairing white goods across Europe. You give clear, honest, practical advice. You respond in the same language as the user's query.
-Respond ONLY with a valid JSON object, no markdown, no code fences:
-{"appliance":"...","symptom":"...","useful_checks_first":["..."],"most_likely_causes":[{"rank":1,"cause":"...","explanation":"...","probability":"high"}],"recommended_fixes":[{"rank":1,"fix":"...","steps":["..."],"risk_level":"low","risk_explanation":"...","difficulty":"beginner","estimated_cost_eur":"0-5 EUR","parts_needed":["..."]}],"when_to_call_a_professional":"..."}
-probability: high/medium/low. risk_level: low/medium/high. difficulty: beginner/intermediate/advanced.`;
+  const systemPrompt = 'You are a senior appliance repair expert with 20 years of hands-on experience repairing white goods across Europe. You give clear, honest, practical advice. You respond in the same language as the user query. Respond ONLY with a valid JSON object with these fields: appliance, symptom, useful_checks_first (array), most_likely_causes (array of objects with rank/cause/explanation/probability), recommended_fixes (array of objects with rank/fix/steps/risk_level/risk_explanation/difficulty/estimated_cost_eur/parts_needed), when_to_call_a_professional. No markdown, no code fences, raw JSON only. probability: high/medium/low. risk_level: low/medium/high. difficulty: beginner/intermediate/advanced.';
 
   try {
     const resp = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 6000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
+      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 4000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
     });
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
