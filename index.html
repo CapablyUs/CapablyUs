@@ -497,7 +497,7 @@ probability: high/medium/low. risk_level: low/medium/high. difficulty: beginner/
     const resp = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 4000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
+      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 6000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
     });
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
@@ -568,7 +568,7 @@ async function sendChat() {
   chatHistory.push({ role: 'user', content: question });
   const chatSystem = `You are a friendly, patient appliance repair expert. The user has a repair dossier for: ${currentDossier.appliance}. Problem: ${currentDossier.symptom}. Causes: ${(currentDossier.most_likely_causes||[]).map(c=>c.cause).join(', ')}. Fixes: ${(currentDossier.recommended_fixes||[]).map(f=>f.fix).join(', ')}. Answer follow-up questions clearly in 2-3 short paragraphs. Respond in the same language as the user's question.`;
   try {
-    const resp = await fetch(API_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 1000, system: chatSystem, messages: chatHistory }) });
+    const resp = await fetch(API_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 6000, system: chatSystem, messages: chatHistory }) });
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
     const answer = data.content.map(b => b.text || '').join('').trim();
