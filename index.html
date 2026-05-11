@@ -3,23 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appliance Repair Advisor</title>
+<title>CapablyUs — Because it matters.</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#F8F9FA;color:#1A1A1A;min-height:100vh}
 
-  /* Top bar */
-  .topbar{background:#0F6E56;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-  .logo{color:#fff;font-size:20px;font-weight:600;letter-spacing:-.3px}
-  .logo span{opacity:.7;font-weight:400}
+  /* ── Navigation ── */
+  .topbar{background:#0F6E56;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo-mark{display:flex;flex-direction:column;align-items:center;line-height:1;cursor:pointer}
+  .logo-name{font-size:26px;font-weight:300;color:#fff;letter-spacing:-0.5px;line-height:1}
+  .logo-name strong{font-weight:700}
+  .logo-tag{font-size:8.5px;font-weight:500;letter-spacing:2.8px;color:rgba(255,255,255,.75);margin-top:2px}
+  .logo-manifesto{font-size:8px;font-style:italic;color:rgba(255,255,255,.5);margin-top:1px;letter-spacing:0.3px}
+  .nav-links{display:flex;gap:24px}
+  .nav-link{color:rgba(255,255,255,.8);font-size:14px;font-weight:400;cursor:pointer;padding:4px 0;border-bottom:1.5px solid transparent;transition:all .15s}
+  .nav-link:hover,.nav-link.active{color:#fff;border-bottom-color:rgba(255,255,255,.6)}
   .lang-switcher{display:flex;gap:6px}
-  .lang-btn{padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:transparent;color:rgba(255,255,255,.8);font-size:12px;cursor:pointer}
-  .lang-btn.active{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.8)}
-  .lang-btn:hover{background:rgba(255,255,255,.15)}
+  .lang-btn{padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:transparent;color:rgba(255,255,255,.7);font-size:12px;cursor:pointer;transition:all .15s}
+  .lang-btn.active{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.7)}
+  .lang-btn:hover{background:rgba(255,255,255,.12)}
 
-  /* Hero */
-  .hero{background:#fff;border-bottom:1px solid #E8E8E8;padding:28px 24px 24px}
-  .manifesto{font-size:13px;color:#0F6E56;font-style:italic;margin-bottom:12px;font-weight:500}
+  /* ── Pages ── */
+  .page{display:none}
+  .page.active{display:block}
+
+  /* ── Home page ── */
+  .hero{background:#fff;border-bottom:1px solid #E8E8E8;padding:32px 24px 28px}
   .hero h1{font-size:24px;font-weight:600;color:#1A1A1A;margin-bottom:5px}
   .hero p{font-size:14px;color:#666;margin-bottom:18px}
   .search-row{display:flex;gap:10px;max-width:700px}
@@ -31,13 +40,9 @@
   .examples{margin-top:10px;font-size:13px;color:#888}
   .examples span{color:#0F6E56;cursor:pointer;margin-right:14px}
   .examples span:hover{text-decoration:underline}
-
-  /* Main */
   .main{max-width:780px;margin:0 auto;padding:24px}
   .status{font-size:14px;color:#666;text-align:center;padding:32px;display:none}
   .dossier{display:none}
-
-  /* Dossier cards */
   .appliance-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
   .appliance-title{font-size:18px;font-weight:600;color:#1A1A1A}
   .symptom-tag{font-size:12px;background:#FFF3CD;color:#856404;padding:4px 12px;border-radius:999px;border:1px solid #FFE69C}
@@ -76,18 +81,17 @@
   ol.steps li:last-child{border-bottom:none}
   ol.steps li::before{content:counter(s);min-width:20px;height:20px;border-radius:50%;background:#E6F1FB;color:#185FA5;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
   .pro-box{background:#FFF5F5;border:1px solid #FECACA;border-radius:8px;padding:12px 14px;font-size:13px;color:#7F1D1D;line-height:1.6}
-
-  /* Disclaimer */
   .disclaimer{background:#F0FBF7;border:1px solid #C8E8DC;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:12px;color:#0F6E56;line-height:1.6}
   .disclaimer strong{font-weight:600}
+  .footer-note{text-align:center;font-size:11px;color:#bbb;margin-top:16px;padding-bottom:32px}
 
-  /* ── Feedback section ── */
+  /* ── Feedback ── */
   .feedback-section{display:none;margin-top:4px;margin-bottom:16px}
   .feedback-card{background:#fff;border:1px solid #E8E8E8;border-radius:12px;padding:20px;margin-bottom:12px}
   .feedback-title{font-size:14px;font-weight:600;color:#1A1A1A;margin-bottom:4px}
   .feedback-sub{font-size:12px;color:#888;margin-bottom:14px}
   .thumb-row{display:flex;gap:10px;margin-bottom:14px}
-  .thumb-btn{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:1.5px solid #DDD;background:#fff;font-size:14px;cursor:pointer;color:#444;transition:all .15s}
+  .thumb-btn{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:1.5px solid #DDD;background:#fff;font-size:14px;cursor:pointer;color:#444}
   .thumb-btn:hover{border-color:#0F6E56;color:#0F6E56}
   .thumb-btn.selected-up{border-color:#0F6E56;background:#F0FBF7;color:#0F6E56;font-weight:500}
   .thumb-btn.selected-down{border-color:#E53E3E;background:#FFF5F5;color:#E53E3E;font-weight:500}
@@ -95,13 +99,10 @@
   .feedback-text:focus{border-color:#0F6E56}
   .feedback-submit{margin-top:10px;padding:9px 20px;background:#0F6E56;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer}
   .feedback-submit:hover{background:#085041}
-  .feedback-submit:disabled{background:#999;cursor:not-allowed}
   .feedback-thanks{display:none;text-align:center;padding:16px;font-size:14px;color:#0F6E56;font-weight:500}
   .feedback-thanks .impact{font-size:12px;color:#888;margin-top:4px;font-weight:400}
   .counter-row{display:flex;align-items:center;gap:6px;font-size:12px;color:#888;margin-top:10px}
   .counter-dot{width:8px;height:8px;border-radius:50%;background:#0F6E56}
-
-  /* Outcome follow-up */
   .outcome-section{display:none;background:#F5FBF8;border:1px solid #C8E8DC;border-radius:12px;padding:16px 20px;margin-bottom:12px}
   .outcome-title{font-size:14px;font-weight:600;color:#0F6E56;margin-bottom:12px}
   .outcome-btns{display:flex;gap:8px;flex-wrap:wrap}
@@ -109,7 +110,7 @@
   .outcome-btn:hover{background:#F0FBF7}
   .outcome-thanks{font-size:13px;color:#0F6E56;display:none}
 
-  /* Chat section */
+  /* ── Chat ── */
   .chat-section{display:none;margin-top:4px;margin-bottom:16px}
   .chat-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
   .chat-icon{width:32px;height:32px;border-radius:50%;background:#0F6E56;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
@@ -134,13 +135,26 @@
   .chat-input-row button:hover{background:#085041}
   .chat-input-row button:disabled{background:#999;cursor:not-allowed}
 
-  .footer-note{text-align:center;font-size:11px;color:#bbb;margin-top:16px;padding-bottom:32px}
+  /* ── About page ── */
+  .about-wrap{max-width:700px;margin:0 auto;padding:48px 24px 64px}
+  .about-manifesto{font-size:20px;font-style:italic;color:#0F6E56;font-weight:400;line-height:1.5;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #E8E8E8}
+  .about-body p{font-size:16px;line-height:1.8;color:#2A2A2A;margin-bottom:20px}
+  .about-body p:last-child{margin-bottom:0}
+  .about-closing{font-size:16px;font-style:italic;color:#0F6E56;margin-top:32px;padding-top:24px;border-top:1px solid #E8E8E8;line-height:1.6}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="logo">Repair<span>Advisor</span></div>
+  <div class="logo-mark" onclick="showPage('home')">
+    <div class="logo-name">Capably<strong>Us</strong></div>
+    <div class="logo-tag">DARE · ACT · BELONG</div>
+    <div class="logo-manifesto">Because it matters.</div>
+  </div>
+  <div class="nav-links">
+    <span class="nav-link active" id="nav-home" onclick="showPage('home')" id="t-nav-home"></span>
+    <span class="nav-link" id="nav-about" onclick="showPage('about')" id="t-nav-about"></span>
+  </div>
   <div class="lang-switcher">
     <button class="lang-btn active" onclick="setLang('en')">EN</button>
     <button class="lang-btn" onclick="setLang('fr')">FR</button>
@@ -148,94 +162,96 @@
   </div>
 </div>
 
-<div class="hero">
-  <div class="manifesto" id="t-manifesto"></div>
-  <h1 id="t-hero-title"></h1>
-  <p id="t-hero-sub"></p>
-  <div class="search-row">
-    <input type="text" id="query" />
-    <button id="btn" onclick="analyse()" id="t-analyse-btn"></button>
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1 id="t-hero-title"></h1>
+    <p id="t-hero-sub"></p>
+    <div class="search-row">
+      <input type="text" id="query" />
+      <button id="btn" onclick="analyse()"></button>
+    </div>
+    <div class="examples">
+      <span id="t-try-label"></span>
+      <span onclick="fill(T.ex1query)" id="t-ex1"></span>
+      <span onclick="fill(T.ex2query)" id="t-ex2"></span>
+      <span onclick="fill(T.ex3query)" id="t-ex3"></span>
+    </div>
   </div>
-  <div class="examples">
-    <span id="t-try-label"></span>
-    <span onclick="fill(T.ex1query)" id="t-ex1"></span>
-    <span onclick="fill(T.ex2query)" id="t-ex2"></span>
-    <span onclick="fill(T.ex3query)" id="t-ex3"></span>
+
+  <div class="main">
+    <div class="status" id="status"></div>
+    <div class="dossier" id="dossier"></div>
+
+    <div class="feedback-section" id="feedback-section">
+      <div class="feedback-card">
+        <div id="feedback-form">
+          <div class="feedback-title" id="t-fb-title"></div>
+          <div class="feedback-sub" id="t-fb-sub"></div>
+          <div class="thumb-row">
+            <button class="thumb-btn" id="thumb-up" onclick="selectThumb('up')">👍 <span id="t-fb-helpful"></span></button>
+            <button class="thumb-btn" id="thumb-down" onclick="selectThumb('down')">👎 <span id="t-fb-nothelpful"></span></button>
+          </div>
+          <textarea class="feedback-text" id="feedback-text" rows="3"></textarea>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <button class="feedback-submit" id="fb-submit" onclick="submitFeedback()"></button>
+            <div class="counter-row"><div class="counter-dot"></div><span id="helpful-counter"></span></div>
+          </div>
+        </div>
+        <div class="feedback-thanks" id="feedback-thanks">
+          <div id="t-fb-thanks"></div>
+          <div class="impact" id="t-fb-impact"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcome-section" id="outcome-section">
+      <div class="outcome-title" id="t-outcome-title"></div>
+      <div class="outcome-btns" id="outcome-btns">
+        <button class="outcome-btn" onclick="recordOutcome('fixed')" id="t-out-fixed"></button>
+        <button class="outcome-btn" onclick="recordOutcome('partial')" id="t-out-partial"></button>
+        <button class="outcome-btn" onclick="recordOutcome('pro')" id="t-out-pro"></button>
+        <button class="outcome-btn" onclick="recordOutcome('notyet')" id="t-out-notyet"></button>
+      </div>
+      <div class="outcome-thanks" id="outcome-thanks"></div>
+    </div>
+
+    <div class="chat-section" id="chat-section">
+      <div class="chat-header">
+        <div class="chat-icon">💬</div>
+        <div>
+          <div class="chat-header-text" id="t-chat-title"></div>
+          <div class="chat-header-sub" id="t-chat-sub"></div>
+        </div>
+      </div>
+      <div class="chat-starters" id="starters"></div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" />
+        <button id="chat-btn" onclick="sendChat()"></button>
+      </div>
+    </div>
+
+    <div class="footer-note" id="footer" style="display:none"></div>
   </div>
 </div>
 
-<div class="main">
-  <div class="status" id="status"></div>
-  <div class="dossier" id="dossier"></div>
-
-  <!-- Feedback section -->
-  <div class="feedback-section" id="feedback-section">
-    <div class="feedback-card">
-      <div id="feedback-form">
-        <div class="feedback-title" id="t-fb-title"></div>
-        <div class="feedback-sub" id="t-fb-sub"></div>
-        <div class="thumb-row">
-          <button class="thumb-btn" id="thumb-up" onclick="selectThumb('up')">👍 <span id="t-fb-helpful"></span></button>
-          <button class="thumb-btn" id="thumb-down" onclick="selectThumb('down')">👎 <span id="t-fb-nothelpful"></span></button>
-        </div>
-        <textarea class="feedback-text" id="feedback-text" rows="3"></textarea>
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-          <button class="feedback-submit" id="fb-submit" onclick="submitFeedback()"></button>
-          <div class="counter-row">
-            <div class="counter-dot"></div>
-            <span id="helpful-counter"></span>
-          </div>
-        </div>
-      </div>
-      <div class="feedback-thanks" id="feedback-thanks">
-        <div id="t-fb-thanks"></div>
-        <div class="impact" id="t-fb-impact"></div>
-      </div>
-    </div>
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-manifesto" id="about-manifesto"></div>
+    <div class="about-body" id="about-body"></div>
+    <div class="about-closing" id="about-closing"></div>
   </div>
-
-  <!-- Outcome follow-up -->
-  <div class="outcome-section" id="outcome-section">
-    <div class="outcome-title" id="t-outcome-title"></div>
-    <div class="outcome-btns" id="outcome-btns">
-      <button class="outcome-btn" onclick="recordOutcome('fixed')" id="t-out-fixed"></button>
-      <button class="outcome-btn" onclick="recordOutcome('partial')" id="t-out-partial"></button>
-      <button class="outcome-btn" onclick="recordOutcome('pro')" id="t-out-pro"></button>
-      <button class="outcome-btn" onclick="recordOutcome('notyet')" id="t-out-notyet"></button>
-    </div>
-    <div class="outcome-thanks" id="outcome-thanks"></div>
-  </div>
-
-  <!-- Chat section -->
-  <div class="chat-section" id="chat-section">
-    <div class="chat-header">
-      <div class="chat-icon">💬</div>
-      <div>
-        <div class="chat-header-text" id="t-chat-title"></div>
-        <div class="chat-header-sub" id="t-chat-sub"></div>
-      </div>
-    </div>
-    <div class="chat-starters" id="starters"></div>
-    <div class="chat-messages" id="chat-messages"></div>
-    <div class="chat-input-row">
-      <input type="text" id="chat-input" />
-      <button id="chat-btn" onclick="sendChat()"></button>
-    </div>
-  </div>
-
-  <div class="footer-note" id="footer" style="display:none"></div>
 </div>
 
 <script>
 const API_ENDPOINT = '/api/anthropic';
 
-// ── LANGUAGE STRINGS ────────────────────────────────────────────────────────
-// To add a new language: copy one block below, change the key (e.g. 'nl'),
-// translate each value, and add a button in the lang-switcher above.
-
 const STRINGS = {
   en: {
-    manifesto: "We are losing the ability to fix things. We think that matters.",
+    navHome: "Repair advisor",
+    navAbout: "About us",
     heroTitle: "What is wrong with your appliance?",
     heroSub: "Describe your appliance and the problem — get an expert repair dossier in seconds.",
     placeholder: "e.g. Bosch washing machine — drum not spinning",
@@ -274,15 +290,22 @@ const STRINGS = {
     chatPlaceholder: "Ask a follow-up question...",
     chatSend: "Send",
     footerNote: "Generated by Claude AI (Anthropic). Always unplug appliances before attempting any repair. When in doubt, consult a qualified technician.",
-    probHigh: "high probability",
-    probMedium: "medium probability",
-    probLow: "low probability",
-    riskLabel: "Risk:",
-    fixLabel: "Fix",
-    partsLabel: "Parts needed:",
+    probHigh: "high probability", probMedium: "medium probability", probLow: "low probability",
+    riskLabel: "Risk:", fixLabel: "Fix", partsLabel: "Parts needed:",
+    aboutManifesto: "We are losing the ability to fix things. We think that matters.",
+    aboutBody: `<p>When something breaks, the instinct is no longer to open it up and see what is wrong. The instinct is to replace it.</p>
+<p>That did not happen by accident. Decades of increased sophistication, design decisions, warranty policies, and consumer culture have quietly taught us that appliances are disposable and that we are not competent to intervene. We have become helpless users of things we once would have maintained.</p>
+<p>We have abandoned a role of stewardship and self-reliance. We have outsourced our capability. CapablyUs exists to push back against that.</p>
+<p>Not with nostalgia — the past was not better simply because people fixed things out of necessity. But with a genuine belief that understanding how things work, and having the confidence to act on that understanding, is a form of dignity. It is the difference between being at the helm of your own life and waiting helplessly.</p>
+<p>The practical consequence of that belief is what you see on this site: an AI-powered repair advisor that gives you clear, honest, risk-rated guidance on what is wrong with your appliance and what you can do about it. Not to replace a qualified technician — sometimes you need one, and we will tell you honestly when that is the case. But to give you the knowledge and confidence to make that decision yourself, as an informed adult, rather than having it made for you by default.</p>
+<p>We also believe this is bigger than individual repairs. Every appliance that gets fixed rather than discarded is a small act of resistance against a throwaway culture that has enormous environmental and financial consequences — consequences that fall hardest on the people who can least afford them. A washing machine is not a luxury. Neither is knowing how to keep it running.</p>
+<p>CapablyUs is built by people who fix things — broken audio equipment, household appliances — and who have experienced firsthand the satisfaction and the frustration of searching for good repair information online. We know what useful looks like, and we know what dangerous misinformation looks like. We are building the tool we always wished existed.</p>
+<p>The knowledge base will grow. The community will grow. The languages will grow. But the belief that drives it will not change:</p>`,
+    aboutClosing: "We are losing the ability to fix things. We think that matters.",
   },
   fr: {
-    manifesto: "Nous perdons la capacité de réparer les choses. Nous pensons que cela compte.",
+    navHome: "Conseiller réparation",
+    navAbout: "À propos",
     heroTitle: "Qu'est-ce qui ne va pas avec votre appareil?",
     heroSub: "Décrivez votre appareil et le problème — obtenez un dossier de réparation expert en quelques secondes.",
     placeholder: "ex. Lave-linge Bosch — le tambour ne tourne pas",
@@ -302,34 +325,33 @@ const STRINGS = {
     disclaimer: "<strong>Ceci est une aide à la décision, pas une garantie.</strong> Votre appareil, vos compétences et votre jugement sont également importants. En cas de doute — arrêtez et consultez un technicien qualifié. Ne tentez jamais une réparation sans débrancher l'appareil.",
     fbTitle: "Ce dossier vous a-t-il été utile?",
     fbSub: "Vos retours améliorent les conseils pour tous ceux qui viennent après vous.",
-    fbHelpful: "Oui, utile",
-    fbNotHelpful: "À améliorer",
+    fbHelpful: "Oui, utile", fbNotHelpful: "À améliorer",
     fbPlaceholder: "Qu'est-ce qui pourrait être mieux? (optionnel)",
     fbSubmit: "Envoyer",
     fbThanks: "Merci — votre retour a bien été pris en compte.",
     fbImpact: "Chaque réponse nous aide à améliorer les conseils pour la prochaine personne.",
     helpfulCounter: "personnes ont trouvé ce dossier utile",
     outcomeTitle: "Une dernière chose — avez-vous réussi à réparer?",
-    outFixed: "✅ Oui, c'est réparé!",
-    outPartial: "🔧 Partiellement — j'y travaille encore",
-    outPro: "👨‍🔧 J'ai appelé un professionnel",
-    outNotYet: "⏳ Pas encore essayé",
+    outFixed: "✅ Oui, c'est réparé!", outPartial: "🔧 Partiellement", outPro: "👨‍🔧 J'ai appelé un professionnel", outNotYet: "⏳ Pas encore essayé",
     outThanks: "Merci — cela nous aide à comprendre ce qui fonctionne vraiment en pratique.",
-    chatTitle: "Vous avez encore des questions?",
-    chatSub: "Posez n'importe quelle question à notre expert en réparation",
+    chatTitle: "Vous avez encore des questions?", chatSub: "Posez n'importe quelle question à notre expert",
     chatStarters: ["De quels outils ai-je besoin?", "Est-ce sans danger pour un débutant?", "Où acheter les pièces?", "Combien de temps prend la réparation?", "Et si j'aggrave les choses?"],
-    chatPlaceholder: "Posez une question...",
-    chatSend: "Envoyer",
-    footerNote: "Généré par Claude AI (Anthropic). Débranchez toujours les appareils avant toute réparation. En cas de doute, consultez un technicien qualifié.",
-    probHigh: "probabilité élevée",
-    probMedium: "probabilité moyenne",
-    probLow: "probabilité faible",
-    riskLabel: "Risque:",
-    fixLabel: "Réparation",
-    partsLabel: "Pièces nécessaires:",
+    chatPlaceholder: "Posez une question...", chatSend: "Envoyer",
+    footerNote: "Généré par Claude AI (Anthropic). Débranchez toujours les appareils avant toute réparation.",
+    probHigh: "probabilité élevée", probMedium: "probabilité moyenne", probLow: "probabilité faible",
+    riskLabel: "Risque:", fixLabel: "Réparation", partsLabel: "Pièces nécessaires:",
+    aboutManifesto: "Nous perdons la capacité de réparer les choses. Nous pensons que cela compte.",
+    aboutBody: `<p>Quand quelque chose tombe en panne, le réflexe n'est plus d'ouvrir l'appareil pour comprendre ce qui ne va pas. Le réflexe, c'est de remplacer.</p>
+<p>Ce n'est pas arrivé par hasard. Des décennies de sophistication croissante, de décisions de conception, de politiques de garantie et de culture consumériste nous ont silencieusement appris que les appareils sont jetables et que nous ne sommes pas compétents pour intervenir. Nous sommes devenus des utilisateurs impuissants de choses que nous aurions autrefois entretenues.</p>
+<p>Nous avons abandonné un rôle de gardien et d'autonomie. Nous avons externalisé notre capacité. CapablyUs existe pour résister à cela.</p>
+<p>Pas avec nostalgie — le passé n'était pas meilleur simplement parce que les gens réparaient par nécessité. Mais avec la conviction sincère que comprendre comment les choses fonctionnent, et avoir la confiance d'agir sur cette compréhension, est une forme de dignité.</p>
+<p>La conséquence pratique de cette conviction, c'est ce que vous voyez sur ce site: un conseiller de réparation alimenté par l'IA qui vous donne des conseils clairs, honnêtes et évalués par niveau de risque. Pas pour remplacer un technicien qualifié — parfois vous en avez besoin, et nous vous le dirons honnêtement. Mais pour vous donner les connaissances et la confiance nécessaires pour prendre cette décision vous-même.</p>
+<p>La base de connaissances grandira. La communauté grandira. Les langues grandiront. Mais la conviction qui la guide ne changera pas:</p>`,
+    aboutClosing: "Nous perdons la capacité de réparer les choses. Nous pensons que cela compte.",
   },
   de: {
-    manifesto: "Wir verlieren die Fähigkeit, Dinge zu reparieren. Wir finden, das ist wichtig.",
+    navHome: "Reparaturberater",
+    navAbout: "Über uns",
     heroTitle: "Was ist mit Ihrem Gerät nicht in Ordnung?",
     heroSub: "Beschreiben Sie Ihr Gerät und das Problem — erhalten Sie in Sekunden ein Expertengutachten.",
     placeholder: "z.B. Bosch Waschmaschine — Trommel dreht nicht",
@@ -346,47 +368,49 @@ const STRINGS = {
     sectionCauses: "Wahrscheinlichste Ursachen",
     sectionFixes: "Empfohlene Reparaturen",
     sectionPro: "Wann einen Fachmann rufen",
-    disclaimer: "<strong>Dies ist eine Entscheidungshilfe, keine Garantie.</strong> Ihr Gerät, Ihre Fähigkeiten und Ihr Urteil sind ebenfalls wichtig. Im Zweifel — stoppen Sie und konsultieren Sie einen qualifizierten Techniker. Versuchen Sie nie eine Reparatur ohne das Gerät vorher vom Strom zu trennen.",
-    fbTitle: "War dieses Dossier hilfreich?",
-    fbSub: "Ihr Feedback verbessert die Ratschläge für alle, die nach Ihnen kommen.",
-    fbHelpful: "Ja, hilfreich",
-    fbNotHelpful: "Verbesserungsbedarf",
+    disclaimer: "<strong>Dies ist eine Entscheidungshilfe, keine Garantie.</strong> Ihr Gerät, Ihre Fähigkeiten und Ihr Urteil sind ebenfalls wichtig. Im Zweifel — stoppen Sie und konsultieren Sie einen qualifizierten Techniker.",
+    fbTitle: "War dieses Dossier hilfreich?", fbSub: "Ihr Feedback verbessert die Ratschläge für alle, die nach Ihnen kommen.",
+    fbHelpful: "Ja, hilfreich", fbNotHelpful: "Verbesserungsbedarf",
     fbPlaceholder: "Was könnte besser sein? (optional)",
     fbSubmit: "Feedback senden",
     fbThanks: "Danke — Ihr Feedback wurde notiert.",
     fbImpact: "Jede Antwort hilft uns, die Ratschläge für die nächste Person zu verbessern.",
     helpfulCounter: "Personen fanden dieses Dossier hilfreich",
     outcomeTitle: "Noch eine Frage — haben Sie es repariert?",
-    outFixed: "✅ Ja, repariert!",
-    outPartial: "🔧 Teilweise — ich arbeite noch daran",
-    outPro: "👨‍🔧 Einen Fachmann gerufen",
-    outNotYet: "⏳ Noch nicht versucht",
+    outFixed: "✅ Ja, repariert!", outPartial: "🔧 Teilweise", outPro: "👨‍🔧 Einen Fachmann gerufen", outNotYet: "⏳ Noch nicht versucht",
     outThanks: "Danke — das hilft uns zu verstehen, was in der Praxis wirklich funktioniert.",
-    chatTitle: "Noch Fragen?",
-    chatSub: "Fragen Sie unseren Reparaturexperten alles zu diesem Dossier",
+    chatTitle: "Noch Fragen?", chatSub: "Fragen Sie unseren Reparaturexperten alles zu diesem Dossier",
     chatStarters: ["Welche Werkzeuge brauche ich?", "Ist das sicher für Anfänger?", "Wo kaufe ich die Ersatzteile?", "Wie lange dauert die Reparatur?", "Was wenn ich es schlimmer mache?"],
-    chatPlaceholder: "Stellen Sie eine Folgefrage...",
-    chatSend: "Senden",
-    footerNote: "Erstellt von Claude AI (Anthropic). Trennen Sie Geräte immer vom Strom vor der Reparatur. Im Zweifel einen qualifizierten Techniker hinzuziehen.",
-    probHigh: "hohe Wahrscheinlichkeit",
-    probMedium: "mittlere Wahrscheinlichkeit",
-    probLow: "niedrige Wahrscheinlichkeit",
-    riskLabel: "Risiko:",
-    fixLabel: "Reparatur",
-    partsLabel: "Benötigte Teile:",
+    chatPlaceholder: "Stellen Sie eine Folgefrage...", chatSend: "Senden",
+    footerNote: "Erstellt von Claude AI (Anthropic). Trennen Sie Geräte immer vom Strom vor der Reparatur.",
+    probHigh: "hohe Wahrscheinlichkeit", probMedium: "mittlere Wahrscheinlichkeit", probLow: "niedrige Wahrscheinlichkeit",
+    riskLabel: "Risiko:", fixLabel: "Reparatur", partsLabel: "Benötigte Teile:",
+    aboutManifesto: "Wir verlieren die Fähigkeit, Dinge zu reparieren. Wir finden, das ist wichtig.",
+    aboutBody: `<p>Wenn etwas kaputtgeht, ist der Reflex nicht mehr, es zu öffnen und nachzusehen, was nicht stimmt. Der Reflex ist, es zu ersetzen.</p>
+<p>Das ist nicht zufällig passiert. Jahrzehnte zunehmender Komplexität, Designentscheidungen, Garantiebedingungen und Konsumkultur haben uns stillschweigend gelehrt, dass Geräte wegwerfbar sind und dass wir nicht kompetent sind einzugreifen. Wir sind zu hilflosen Nutzern von Dingen geworden, die wir einst selbst gewartet hätten.</p>
+<p>Wir haben eine Rolle der Eigenverantwortung aufgegeben. Wir haben unsere Fähigkeiten ausgelagert. CapablyUs existiert, um dagegen anzukämpfen.</p>
+<p>Nicht aus Nostalgie — die Vergangenheit war nicht besser, nur weil die Menschen aus Notwendigkeit reparierten. Sondern aus der echten Überzeugung, dass das Verstehen, wie Dinge funktionieren, und das Vertrauen, auf der Grundlage dieses Verständnisses zu handeln, eine Form von Würde ist.</p>
+<p>Die praktische Konsequenz dieser Überzeugung ist das, was Sie auf dieser Website sehen: ein KI-gestützter Reparaturberater, der Ihnen klare, ehrliche, risikobewertete Anleitungen gibt. Nicht um einen qualifizierten Techniker zu ersetzen — manchmal brauchen Sie einen, und wir werden Ihnen das ehrlich sagen. Aber um Ihnen das Wissen und das Vertrauen zu geben, diese Entscheidung selbst zu treffen.</p>
+<p>Die Wissensbasis wird wachsen. Die Gemeinschaft wird wachsen. Die Sprachen werden wachsen. Aber die Überzeugung, die sie antreibt, wird sich nicht ändern:</p>`,
+    aboutClosing: "Wir verlieren die Fähigkeit, Dinge zu reparieren. Wir finden, das ist wichtig.",
   }
 };
 
-// ── STATE ────────────────────────────────────────────────────────────────────
 let currentLang = 'en';
 let T = STRINGS.en;
 let currentDossier = null;
 let chatHistory = [];
 let thumbSelected = null;
-let helpfulCount = Math.floor(Math.random() * 40) + 12; // Simulated seed count
+let helpfulCount = Math.floor(Math.random() * 40) + 12;
 let outcomeShown = false;
 
-// ── LANGUAGE ─────────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('nav-' + name).classList.add('active');
+}
+
 function setLang(lang) {
   currentLang = lang;
   T = STRINGS[lang];
@@ -396,7 +420,8 @@ function setLang(lang) {
 }
 
 function applyStrings() {
-  document.getElementById('t-manifesto').textContent = T.manifesto;
+  document.getElementById('nav-home').textContent = T.navHome;
+  document.getElementById('nav-about').textContent = T.navAbout;
   document.getElementById('t-hero-title').textContent = T.heroTitle;
   document.getElementById('t-hero-sub').textContent = T.heroSub;
   document.getElementById('query').placeholder = T.placeholder;
@@ -429,21 +454,15 @@ function applyStrings() {
     const el = document.createElement('span');
     el.className = 'starter';
     el.textContent = s;
-    el.onclick = () => askStarter(s);
+    el.onclick = () => { document.getElementById('chat-input').value = s; sendChat(); };
     starters.appendChild(el);
   });
+  document.getElementById('about-manifesto').textContent = T.aboutManifesto;
+  document.getElementById('about-body').innerHTML = T.aboutBody;
+  document.getElementById('about-closing').textContent = T.aboutClosing;
 }
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
-function fill(text) {
-  document.getElementById('query').value = text;
-  document.getElementById('query').focus();
-}
-
-function askStarter(text) {
-  document.getElementById('chat-input').value = text;
-  sendChat();
-}
+function fill(text) { document.getElementById('query').value = text; document.getElementById('query').focus(); }
 
 document.addEventListener('DOMContentLoaded', () => {
   applyStrings();
@@ -451,166 +470,70 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('chat-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
 });
 
-// ── ANALYSE ──────────────────────────────────────────────────────────────────
 async function analyse() {
   const query = document.getElementById('query').value.trim();
   if (!query) return;
-
   const btn = document.getElementById('btn');
   const status = document.getElementById('status');
   const dossier = document.getElementById('dossier');
-  const feedbackSection = document.getElementById('feedback-section');
-  const outcomeSection = document.getElementById('outcome-section');
-  const chatSection = document.getElementById('chat-section');
-  const footer = document.getElementById('footer');
-
-  btn.disabled = true;
-  btn.textContent = '...';
-  status.style.display = 'block';
-  status.textContent = T.analysing;
-  dossier.style.display = 'none';
-  dossier.innerHTML = '';
-  feedbackSection.style.display = 'none';
-  outcomeSection.style.display = 'none';
-  chatSection.style.display = 'none';
+  btn.disabled = true; btn.textContent = '...';
+  status.style.display = 'block'; status.textContent = T.analysing;
+  dossier.style.display = 'none'; dossier.innerHTML = '';
+  document.getElementById('feedback-section').style.display = 'none';
+  document.getElementById('outcome-section').style.display = 'none';
+  document.getElementById('chat-section').style.display = 'none';
   document.getElementById('chat-messages').innerHTML = '';
   document.getElementById('feedback-form').style.display = 'block';
   document.getElementById('feedback-thanks').style.display = 'none';
-  thumbSelected = null;
-  outcomeShown = false;
-  chatHistory = [];
-  footer.style.display = 'none';
+  thumbSelected = null; outcomeShown = false; chatHistory = [];
+  document.getElementById('footer').style.display = 'none';
 
   const systemPrompt = `You are a senior appliance repair expert with 20 years of hands-on experience repairing white goods across Europe. You give clear, honest, practical advice. You respond in the same language as the user's query.
-
 Respond ONLY with a valid JSON object, no markdown, no code fences:
-{
-  "appliance": "full appliance name",
-  "symptom": "symptom as described",
-  "useful_checks_first": ["check 1", "check 2", "check 3"],
-  "most_likely_causes": [
-    {"rank": 1, "cause": "short name", "explanation": "plain explanation under 30 words", "probability": "high"}
-  ],
-  "recommended_fixes": [
-    {
-      "rank": 1,
-      "fix": "concise fix title",
-      "steps": ["step 1", "step 2", "step 3", "step 4", "step 5"],
-      "risk_level": "low",
-      "risk_explanation": "under 20 words",
-      "difficulty": "beginner",
-      "estimated_cost_eur": "0-5 EUR",
-      "parts_needed": ["part if any"]
-    }
-  ],
-  "when_to_call_a_professional": "clear advice under 40 words"
-}
+{"appliance":"...","symptom":"...","useful_checks_first":["..."],"most_likely_causes":[{"rank":1,"cause":"...","explanation":"...","probability":"high"}],"recommended_fixes":[{"rank":1,"fix":"...","steps":["..."],"risk_level":"low","risk_explanation":"...","difficulty":"beginner","estimated_cost_eur":"0-5 EUR","parts_needed":["..."]}],"when_to_call_a_professional":"..."}
 probability: high/medium/low. risk_level: low/medium/high. difficulty: beginner/intermediate/advanced.`;
 
   try {
     const resp = await fetch(API_ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 4000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 4000, system: systemPrompt, messages: [{ role: 'user', content: `Appliance and symptom: ${query}\n\nProvide a complete repair dossier.` }] })
     });
-
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
     let text = data.content.map(b => b.text || '').join('');
     text = text.replace(/```json|```/g, '').trim();
     const d = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
-
     currentDossier = d;
     status.style.display = 'none';
     render(d);
-    footer.style.display = 'block';
-    footer.textContent = T.footerNote;
-    feedbackSection.style.display = 'block';
-    chatSection.style.display = 'block';
+    document.getElementById('footer').style.display = 'block';
+    document.getElementById('footer').textContent = T.footerNote;
+    document.getElementById('feedback-section').style.display = 'block';
+    document.getElementById('chat-section').style.display = 'block';
     document.getElementById('helpful-counter').textContent = `${helpfulCount} ${T.helpfulCounter}`;
-
   } catch(err) {
     status.style.display = 'none';
     dossier.style.display = 'block';
     dossier.innerHTML = `<div style="background:#FFF5F5;border:1px solid #FECACA;border-radius:8px;padding:16px;color:#7F1D1D;font-size:14px"><strong>Something went wrong:</strong> ${err.message}</div>`;
   }
-
-  btn.disabled = false;
-  btn.textContent = T.analyseBtn;
+  btn.disabled = false; btn.textContent = T.analyseBtn;
 }
 
-// ── RENDER DOSSIER ───────────────────────────────────────────────────────────
+function probLabel(p) { return p === 'high' ? T.probHigh : p === 'medium' ? T.probMedium : T.probLow; }
 function probClass(p) { return p === 'high' ? 'high' : p === 'medium' ? 'medium' : 'low'; }
 function riskClass(r) { return 'risk-' + (r === 'high' ? 'high' : r === 'medium' ? 'medium' : 'low'); }
 function diffClass(d) { return d === 'advanced' ? 'diff-advanced' : d === 'intermediate' ? 'diff-intermediate' : 'diff-beginner'; }
-function probLabel(p) { return p === 'high' ? T.probHigh : p === 'medium' ? T.probMedium : T.probLow; }
 
 function render(d) {
   const dossier = document.getElementById('dossier');
   dossier.style.display = 'block';
-
-  const checks = (d.useful_checks_first || []).map((c, i) =>
-    `<div class="check-row"><div class="check-num">${i + 1}</div><div>${c}</div></div>`
-  ).join('');
-
-  const causes = (d.most_likely_causes || []).map(c =>
-    `<div class="cause-card">
-      <div class="cause-top">
-        <span class="cause-name">${c.cause}</span>
-        <span class="prob ${probClass(c.probability)}">${probLabel(c.probability)}</span>
-      </div>
-      <div class="cause-text">${c.explanation}</div>
-    </div>`
-  ).join('');
-
-  const fixes = (d.recommended_fixes || []).map(f =>
-    `<div class="fix-card">
-      <div class="fix-top">
-        <span class="fix-title">${T.fixLabel} ${f.rank}: ${f.fix}</span>
-        <div class="badges">
-          <span class="badge ${riskClass(f.risk_level)}">${T.riskLabel} ${f.risk_level}</span>
-          <span class="badge ${diffClass(f.difficulty)}">${f.difficulty}</span>
-          ${f.estimated_cost_eur ? `<span class="cost-badge">${f.estimated_cost_eur}</span>` : ''}
-        </div>
-      </div>
-      ${f.risk_explanation ? `<div class="risk-note">${f.risk_explanation}</div>` : ''}
-      ${f.parts_needed && f.parts_needed.length ? `<div class="parts"><strong>${T.partsLabel}</strong> ${f.parts_needed.join(', ')}</div>` : ''}
-      <ol class="steps">${(f.steps || []).map(s => `<li>${s}</li>`).join('')}</ol>
-    </div>`
-  ).join('');
-
-  dossier.innerHTML = `
-    <div class="appliance-bar">
-      <span class="appliance-title">${d.appliance}</span>
-      <span class="symptom-tag">${d.symptom}</span>
-    </div>
-    <div class="disclaimer">${T.disclaimer}</div>
-    <div class="card">
-      <div class="card-title">${T.sectionChecks}</div>
-      ${checks}
-    </div>
-    <div class="card">
-      <div class="card-title">${T.sectionCauses}</div>
-      ${causes}
-    </div>
-    <div class="card">
-      <div class="card-title">${T.sectionFixes}</div>
-      ${fixes}
-    </div>
-    <div class="card">
-      <div class="card-title">${T.sectionPro}</div>
-      <div class="pro-box">${d.when_to_call_a_professional}</div>
-    </div>`;
+  const checks = (d.useful_checks_first || []).map((c,i) => `<div class="check-row"><div class="check-num">${i+1}</div><div>${c}</div></div>`).join('');
+  const causes = (d.most_likely_causes || []).map(c => `<div class="cause-card"><div class="cause-top"><span class="cause-name">${c.cause}</span><span class="prob ${probClass(c.probability)}">${probLabel(c.probability)}</span></div><div class="cause-text">${c.explanation}</div></div>`).join('');
+  const fixes = (d.recommended_fixes || []).map(f => `<div class="fix-card"><div class="fix-top"><span class="fix-title">${T.fixLabel} ${f.rank}: ${f.fix}</span><div class="badges"><span class="badge ${riskClass(f.risk_level)}">${T.riskLabel} ${f.risk_level}</span><span class="badge ${diffClass(f.difficulty)}">${f.difficulty}</span>${f.estimated_cost_eur ? `<span class="cost-badge">${f.estimated_cost_eur}</span>` : ''}</div></div>${f.risk_explanation ? `<div class="risk-note">${f.risk_explanation}</div>` : ''}${f.parts_needed && f.parts_needed.length ? `<div class="parts"><strong>${T.partsLabel}</strong> ${f.parts_needed.join(', ')}</div>` : ''}<ol class="steps">${(f.steps||[]).map(s=>`<li>${s}</li>`).join('')}</ol></div>`).join('');
+  dossier.innerHTML = `<div class="appliance-bar"><span class="appliance-title">${d.appliance}</span><span class="symptom-tag">${d.symptom}</span></div><div class="disclaimer">${T.disclaimer}</div><div class="card"><div class="card-title">${T.sectionChecks}</div>${checks}</div><div class="card"><div class="card-title">${T.sectionCauses}</div>${causes}</div><div class="card"><div class="card-title">${T.sectionFixes}</div>${fixes}</div><div class="card"><div class="card-title">${T.sectionPro}</div><div class="pro-box">${d.when_to_call_a_professional}</div></div>`;
 }
 
-// ── FEEDBACK ─────────────────────────────────────────────────────────────────
 function selectThumb(direction) {
   thumbSelected = direction;
   document.getElementById('thumb-up').className = 'thumb-btn' + (direction === 'up' ? ' selected-up' : '');
@@ -618,119 +541,50 @@ function selectThumb(direction) {
 }
 
 function submitFeedback() {
-  const text = document.getElementById('feedback-text').value.trim();
-  if (!thumbSelected && !text) {
-    selectThumb('up');
-  }
-
-  // In a real product, this would POST to your backend
-  // For now we log it and show the thank-you state
-  console.log('FEEDBACK:', {
-    appliance: currentDossier?.appliance,
-    symptom: currentDossier?.symptom,
-    rating: thumbSelected,
-    comment: text,
-    lang: currentLang,
-    timestamp: new Date().toISOString()
-  });
-
-  if (thumbSelected === 'up') {
-    helpfulCount++;
-    document.getElementById('helpful-counter').textContent = `${helpfulCount} ${T.helpfulCounter}`;
-  }
-
+  if (!thumbSelected) selectThumb('up');
+  console.log('FEEDBACK:', { appliance: currentDossier?.appliance, rating: thumbSelected, comment: document.getElementById('feedback-text').value.trim(), lang: currentLang, timestamp: new Date().toISOString() });
+  if (thumbSelected === 'up') { helpfulCount++; document.getElementById('helpful-counter').textContent = `${helpfulCount} ${T.helpfulCounter}`; }
   document.getElementById('feedback-form').style.display = 'none';
   document.getElementById('feedback-thanks').style.display = 'block';
-
-  // Show outcome section after a short delay
-  if (!outcomeShown) {
-    setTimeout(() => {
-      document.getElementById('outcome-section').style.display = 'block';
-      outcomeShown = true;
-    }, 1200);
-  }
+  if (!outcomeShown) { setTimeout(() => { document.getElementById('outcome-section').style.display = 'block'; outcomeShown = true; }, 1200); }
 }
 
 function recordOutcome(result) {
-  console.log('OUTCOME:', {
-    appliance: currentDossier?.appliance,
-    result,
-    lang: currentLang,
-    timestamp: new Date().toISOString()
-  });
-
+  console.log('OUTCOME:', { appliance: currentDossier?.appliance, result, lang: currentLang, timestamp: new Date().toISOString() });
   document.getElementById('outcome-btns').style.display = 'none';
-  const thanks = document.getElementById('outcome-thanks');
-  thanks.textContent = T.outThanks;
-  thanks.style.display = 'block';
+  const t = document.getElementById('outcome-thanks');
+  t.textContent = T.outThanks; t.style.display = 'block';
 }
 
-// ── CHAT ─────────────────────────────────────────────────────────────────────
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const question = input.value.trim();
   if (!question || !currentDossier) return;
-
   const chatBtn = document.getElementById('chat-btn');
   const messages = document.getElementById('chat-messages');
-
-  input.value = '';
-  chatBtn.disabled = true;
-
+  input.value = ''; chatBtn.disabled = true;
   appendMessage('user', question);
   const thinking = appendMessage('thinking', '...');
   chatHistory.push({ role: 'user', content: question });
-
-  const chatSystem = `You are a friendly, patient appliance repair expert. The user has just received a repair dossier for: ${currentDossier.appliance}. Problem: ${currentDossier.symptom}. Most likely causes: ${(currentDossier.most_likely_causes || []).map(c => c.cause).join(', ')}. Fixes recommended: ${(currentDossier.recommended_fixes || []).map(f => f.fix).join(', ')}.
-
-Answer follow-up questions clearly and practically. Be encouraging but honest about difficulty and risk. Keep answers to 2-3 short paragraphs. Use plain language. Respond in the same language as the user's question.`;
-
+  const chatSystem = `You are a friendly, patient appliance repair expert. The user has a repair dossier for: ${currentDossier.appliance}. Problem: ${currentDossier.symptom}. Causes: ${(currentDossier.most_likely_causes||[]).map(c=>c.cause).join(', ')}. Fixes: ${(currentDossier.recommended_fixes||[]).map(f=>f.fix).join(', ')}. Answer follow-up questions clearly in 2-3 short paragraphs. Respond in the same language as the user's question.`;
   try {
-    const resp = await fetch(API_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 1000,
-        system: chatSystem,
-        messages: chatHistory
-      })
-    });
-
+    const resp = await fetch(API_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 1000, system: chatSystem, messages: chatHistory }) });
     if (!resp.ok) throw new Error(`API error ${resp.status}`);
     const data = await resp.json();
     const answer = data.content.map(b => b.text || '').join('').trim();
-    thinking.remove();
-    appendMessage('assistant', answer);
+    thinking.remove(); appendMessage('assistant', answer);
     chatHistory.push({ role: 'assistant', content: answer });
-
-  } catch(err) {
-    thinking.remove();
-    appendMessage('assistant', `Error: ${err.message}`);
-  }
-
-  chatBtn.disabled = false;
-  messages.scrollTop = messages.scrollHeight;
+  } catch(err) { thinking.remove(); appendMessage('assistant', `Error: ${err.message}`); }
+  chatBtn.disabled = false; messages.scrollTop = messages.scrollHeight;
 }
 
 function appendMessage(type, text) {
   const messages = document.getElementById('chat-messages');
   const div = document.createElement('div');
-  if (type === 'thinking') {
-    div.className = 'msg msg-thinking msg-assistant';
-    div.innerHTML = `<div class="msg-avatar" style="background:#0F6E56;color:#fff">AI</div><div class="msg-bubble">${text}</div>`;
-  } else if (type === 'user') {
-    div.className = 'msg msg-user';
-    div.innerHTML = `<div class="msg-avatar">You</div><div class="msg-bubble">${text}</div>`;
-  } else {
-    div.className = 'msg msg-assistant';
-    const formatted = text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
-    div.innerHTML = `<div class="msg-avatar" style="background:#0F6E56;color:#fff">AI</div><div class="msg-bubble"><p>${formatted}</p></div>`;
-  }
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
+  if (type === 'thinking') { div.className = 'msg msg-thinking msg-assistant'; div.innerHTML = `<div class="msg-avatar" style="background:#0F6E56;color:#fff">AI</div><div class="msg-bubble">${text}</div>`; }
+  else if (type === 'user') { div.className = 'msg msg-user'; div.innerHTML = `<div class="msg-avatar">You</div><div class="msg-bubble">${text}</div>`; }
+  else { div.className = 'msg msg-assistant'; div.innerHTML = `<div class="msg-avatar" style="background:#0F6E56;color:#fff">AI</div><div class="msg-bubble"><p>${text.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')}</p></div>`; }
+  messages.appendChild(div); messages.scrollTop = messages.scrollHeight;
   return div;
 }
 </script>
